@@ -1,3 +1,12 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 export default function Home() {
-  return <main>This Home Page</main>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/login');
+  }, []);
+
+  return null;
 }
