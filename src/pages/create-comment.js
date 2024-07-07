@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addComment } from '@/store/commentsSlice';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
 
 const CreateComment = () => {
   const [name, setName] = useState('');
@@ -18,6 +19,7 @@ const CreateComment = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const comments = useSelector((state) => state.comments);
 
   const isNameValid = name !== '';
   const isEmailValid = /\S+@\S+\.\S+/.test(email);
@@ -32,14 +34,13 @@ const CreateComment = () => {
     }
 
     const newComment = {
+      id: uuidv4(),
       name,
       email,
       body,
     };
 
     dispatch(addComment(newComment));
-
-    console.log('Submitting comment:', { name, email, body });
 
     router.push('/dashboard');
   };

@@ -22,8 +22,24 @@ const Dashboard = () => {
   const comments = useSelector((state) => state.comments);
 
   useEffect(() => {
-    dispatch(setComments(comments));
-  }, [dispatch, comments]);
+    const fetchData = async () => {
+      try {
+        const storedComments = localStorage.getItem('comments');
+        if (storedComments) {
+          dispatch(setComments(JSON.parse(storedComments)));
+        } else {
+          const response = await axios.get(
+            'https://jsonplaceholder.typicode.com/comments'
+          );
+          dispatch(setComments(response.data));
+        }
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const confirmDelete = (id) => {
     Swal.fire({

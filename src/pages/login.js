@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setComments } from '@/store/commentsSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -14,18 +16,37 @@ const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const isUsernameValid = username !== '';
+  const isPasswordValid = password !== '';
+
+  const realUsername = 'admin';
+  const realPassword = '123456';
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === '' || password === '') {
+    if (
+      !isUsernameValid ||
+      !isPasswordValid ||
+      username !== realUsername ||
+      password !== realPassword
+    ) {
+      toast.error('Invalid username or password');
       return;
     }
     router.push('/dashboard');
   };
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/comments')
-      .then((response) => response.json())
-      .then((data) => dispatch(setComments(data)));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/comments');
+        dispatch(setComments(response.data));
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   const handleBlur = (field) => {
@@ -34,9 +55,6 @@ const LoginPage = () => {
       [field]: true,
     });
   };
-
-  const isUsernameValid = username !== '';
-  const isPasswordValid = password !== '';
 
   return (
     <div className='flex items-center justify-center h-screen bg-gray-100'>
@@ -47,6 +65,7 @@ const LoginPage = () => {
             <label className='block text-gray-700'>Username</label>
             <input
               type='text'
+              placeholder='admin'
               className={`input-form ${
                 touched.username && !isUsernameValid
                   ? 'border-red-500'
@@ -64,6 +83,7 @@ const LoginPage = () => {
             <label className='block text-gray-700'>Password</label>
             <input
               type='password'
+              placeholder='123456'
               className={`input-form ${
                 touched.password && !isPasswordValid
                   ? 'border-red-500'
@@ -89,6 +109,7 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );

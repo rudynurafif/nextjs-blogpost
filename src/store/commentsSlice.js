@@ -1,34 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// const updateCommentsData = (state) => {
-//   localStorage.setItem('comments', JSON.stringify(state));
-
-//   return state;
-// };
-
-// const initialState =
-//   typeof window !== 'undefined'
-//     ? localStorage.getItem('comments')
-//       ? JSON.parse(localStorage.getItem('comments'))
-//       : []
-//     : false;
+const getInitialState = () => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+  const storedComments = localStorage.getItem('comments');
+  return storedComments ? JSON.parse(storedComments) : [];
+};
 
 const commentsSlice = createSlice({
   name: 'comments',
+  initialState: getInitialState(),
   initialState: [],
   reducers: {
     setComments: (state, action) => {
-      // return updateCommentsData(action.payload);
+      localStorage.setItem('comments', JSON.stringify(action.payload));
       return action.payload;
     },
     addComment: (state, action) => {
-      // updateCommentsData(state.unshift(action.payload));
       state.unshift(action.payload);
+      localStorage.setItem('comments', JSON.stringify(state));
     },
     deleteComment: (state, action) => {
-      return state.filter((comment) => comment.id !== action.payload);
-
-      // return updateCommentsData(state);
+      const newState = state.filter((comment) => comment.id !== action.payload);
+      localStorage.setItem('comments', JSON.stringify(newState));
+      return newState;
     },
   },
 });
