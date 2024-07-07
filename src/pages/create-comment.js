@@ -57,7 +57,7 @@ const CreateComment = () => {
   };
 
   return (
-    <div className='flex items-center justify-center h-screen bg-gray-100'>
+    <div className='flex items-center justify-center mt-5'>
       <div className='w-4/5 bg-white rounded-lg shadow-md p-8'>
         <h2 className='text-2xl font-bold mb-4'>Create Comment</h2>
         {error && <p className='text-red-500'>{error}</p>}

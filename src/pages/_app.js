@@ -6,13 +6,16 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { store } from '@/store/store';
+import RootLayout from '@/components/RootLayout';
 
 export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PrimeReactProvider>
-        <Component {...pageProps} />
-        <ToastContainer />
+        <RootLayout>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </RootLayout>
       </PrimeReactProvider>
     </Provider>
   );

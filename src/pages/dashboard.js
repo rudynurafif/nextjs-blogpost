@@ -127,43 +127,54 @@ const Dashboard = () => {
   };
 
   return (
-    <div className='container mx-auto mt-5'>
-      <div className='flex justify-between items-center mb-4'>
-        <h1 className='text-3xl font-bold text-sky-500'>Welcome</h1>
-        <Button
-          label='Logout'
-          className='bg-red-500 font-semibold text-white p-2 rounded'
-          onClick={handleLogout}
-        />
-      </div>
-      <h2 className='text-2xl font-bold mb-4'>Dashboard</h2>
-      <Link href='/create-comment'>
-        <Button className='bg-green-600 text-white font-bold px-4 py-2 rounded-md mb-3'>
-          Create Comment
-        </Button>
-      </Link>
-      <div className='card shadow-md rounded-lg overflow-hidden'>
-        <DataTable
-          value={comments}
-          paginator
-          stripedRows
-          rows={10}
-          rowsPerPageOptions={[10, 25, 50, 100]}
-          globalFilter={globalFilter}
-          header={header}
-          emptyMessage='No comments found.'
-        >
-          <Column header='#' body={indexBodyTemplate} />
-          <Column field='name' header='Name' filter filterPlaceholder='Search by name' />
-          <Column
-            field='email'
-            header='Email'
-            filter
-            filterPlaceholder='Search by email'
+    <div className='flex items-center justify-center'>
+      <div className='container mx-auto mt-5'>
+        <div className='flex justify-between items-center mb-4'>
+          <h1 className='text-3xl font-bold text-sky-500'>Welcome, Admin!</h1>
+          <Button
+            label='Logout'
+            className='bg-red-500 font-semibold text-white p-2 rounded'
+            onClick={handleLogout}
           />
-          <Column field='body' header='Comment' />
-          <Column body={actionBodyTemplate} header='Actions' style={{ width: '8rem' }} />
-        </DataTable>
+        </div>
+        <h2 className='text-2xl font-bold mb-4'>Dashboard</h2>
+        <Link href='/create-comment'>
+          <Button className='bg-green-600 text-white font-bold px-4 py-2 rounded-md mb-3'>
+            Create Comment
+          </Button>
+        </Link>
+        <div className='card shadow-md rounded-lg overflow-hidden'>
+          <DataTable
+            value={comments}
+            paginator
+            stripedRows
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            globalFilter={globalFilter}
+            header={header}
+            emptyMessage='No comments found.'
+          >
+            <Column header='#' body={indexBodyTemplate} />
+            <Column
+              field='name'
+              header='Name'
+              filter
+              filterPlaceholder='Search by name'
+            />
+            <Column
+              field='email'
+              header='Email'
+              filter
+              filterPlaceholder='Search by email'
+            />
+            <Column field='body' header='Comment' />
+            <Column
+              body={actionBodyTemplate}
+              header='Actions'
+              style={{ width: '8rem' }}
+            />
+          </DataTable>
+        </div>
       </div>
     </div>
   );
