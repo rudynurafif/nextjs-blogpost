@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "next": "14.2.4",
@@ -16,6 +17,7 @@
     "primereact": "^10.7.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-redux": "^9.1.2",
     "sweetalert2": "^11.12.2"
   },
   "devDependencies": {

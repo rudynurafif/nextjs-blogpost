@@ -1,4 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addComment } from '@/store/commentsSlice';
 import { useRouter } from 'next/router';
 
 const CreateComment = () => {
@@ -12,29 +16,35 @@ const CreateComment = () => {
     body: false,
   });
 
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  const isNameValid = name !== '';
+  const isEmailValid = /\S+@\S+\.\S+/.test(email);
+  const isBodyValid = body !== '';
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (name === '' || email === '' || body === '') {
-      setError('All fields are required');
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Email is invalid');
+    if (!isNameValid || !isEmailValid || !isBodyValid) {
+      setError('Fields are required');
       return;
     }
 
-    // Simulate submission (replace with actual submission logic if needed)
+    const newComment = {
+      name,
+      email,
+      body,
+    };
+
+    dispatch(addComment(newComment));
+
     console.log('Submitting comment:', { name, email, body });
 
-    // Redirect to dashboard after successful submission
     router.push('/dashboard');
   };
 
   const handleCancel = () => {
-    // Redirect to dashboard without submitting
     router.push('/dashboard');
   };
 
@@ -44,10 +54,6 @@ const CreateComment = () => {
       [field]: true,
     });
   };
-
-  const isNameValid = name !== '';
-  const isEmailValid = /\S+@\S+\.\S+/.test(email);
-  const isBodyValid = body !== '';
 
   return (
     <div className='flex items-center justify-center h-screen bg-gray-100'>
@@ -59,7 +65,7 @@ const CreateComment = () => {
             <label className='block text-gray-700'>Name</label>
             <input
               type='text'
-              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+              className={`input-form ${
                 touched.name && !isNameValid ? 'border-red-500' : 'border-gray-300'
               }`}
               value={name}
@@ -74,7 +80,7 @@ const CreateComment = () => {
             <label className='block text-gray-700'>Email</label>
             <input
               type='email'
-              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+              className={`input-form ${
                 touched.email && !isEmailValid ? 'border-red-500' : 'border-gray-300'
               }`}
               value={email}
@@ -88,7 +94,7 @@ const CreateComment = () => {
           <div className='mb-4'>
             <label className='block text-gray-700'>Comment</label>
             <textarea
-              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+              className={`input-form ${
                 touched.body && !isBodyValid ? 'border-red-500' : 'border-gray-300'
               }`}
               value={body}

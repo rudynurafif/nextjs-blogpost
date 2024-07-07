@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -10,17 +11,19 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { setComments, deleteComment } from '@/store/commentsSlice';
 
 const Dashboard = () => {
-  const [comments, setComments] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
+
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const comments = useSelector((state) => state.comments);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/comments')
-      .then((response) => response.json())
-      .then((data) => setComments(data));
-  }, []);
+    dispatch(setComments(comments));
+  }, [dispatch, comments]);
 
   const confirmDelete = (id) => {
     Swal.fire({
@@ -33,7 +36,7 @@ const Dashboard = () => {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteComment(id);
+        dispatch(deleteComment(id));
         Swal.fire({
           title: 'Deleted!',
           text: 'Your comment has been deleted.',
@@ -51,10 +54,6 @@ const Dashboard = () => {
         });
       }
     });
-  };
-
-  const deleteComment = (id) => {
-    setComments(comments.filter((comment) => comment.id !== id));
   };
 
   const handleLogout = () => {

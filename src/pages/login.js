@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setComments } from '@/store/commentsSlice';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -10,6 +12,7 @@ const LoginPage = () => {
   });
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +21,12 @@ const LoginPage = () => {
     }
     router.push('/dashboard');
   };
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/comments')
+      .then((response) => response.json())
+      .then((data) => dispatch(setComments(data)));
+  }, [dispatch]);
 
   const handleBlur = (field) => {
     setTouched({
@@ -38,7 +47,7 @@ const LoginPage = () => {
             <label className='block text-gray-700'>Username</label>
             <input
               type='text'
-              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+              className={`input-form ${
                 touched.username && !isUsernameValid
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -55,7 +64,7 @@ const LoginPage = () => {
             <label className='block text-gray-700'>Password</label>
             <input
               type='password'
-              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
+              className={`input-form ${
                 touched.password && !isPasswordValid
                   ? 'border-red-500'
                   : 'border-gray-300'
