@@ -81,6 +81,7 @@ const CreateComment = () => {
             <label className='block text-gray-700'>Email</label>
             <input
               type='email'
+              autoComplete='off'
               className={`input-form ${
                 touched.email && !isEmailValid ? 'border-red-500' : 'border-gray-300'
               }`}

@@ -11,8 +11,8 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PrimeReactProvider>
-        <ToastContainer />
         <Component {...pageProps} />
+        <ToastContainer />
       </PrimeReactProvider>
     </Provider>
   );

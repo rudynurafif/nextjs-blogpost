@@ -7,11 +7,11 @@ import { InputText } from 'primereact/inputtext';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
+import { setComments, deleteComment } from '@/store/commentsSlice';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import { setComments, deleteComment } from '@/store/commentsSlice';
 
 const Dashboard = () => {
   const [globalFilter, setGlobalFilter] = useState('');
