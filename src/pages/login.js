@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { setComments } from '@/store/commentsSlice';
 import { toast, ToastContainer } from 'react-toastify';
-import axios from 'axios';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +11,6 @@ const LoginPage = () => {
   });
 
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const isUsernameValid = username !== '';
   const isPasswordValid = password !== '';

@@ -14,7 +14,26 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 
-const Dashboard = () => {
+export const getServerSideProps = async () => {
+  try {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/comments');
+    const comments = response.data;
+    return {
+      props: {
+        comments,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    return {
+      props: {
+        comments: [],
+      },
+    };
+  }
+};
+
+const Dashboard = ({ comments: initialComments }) => {
   const [globalFilter, setGlobalFilter] = useState('');
 
   const router = useRouter();
@@ -23,24 +42,19 @@ const Dashboard = () => {
   const comments = useSelector((state) => state.comments);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedComments = localStorage.getItem('comments');
-        if (storedComments) {
-          dispatch(setComments(JSON.parse(storedComments)));
-        } else {
-          const response = await axios.get(
-            'https://jsonplaceholder.typicode.com/comments'
-          );
-          dispatch(setComments(response.data));
-        }
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
+    const storedComments = localStorage.getItem('comments');
+    if (storedComments) {
+      dispatch(setComments(JSON.parse(storedComments)));
+    } else {
+      dispatch(setComments(initialComments));
+    }
+  }, [dispatch, initialComments]);
 
-    fetchData();
-  }, [dispatch]);
+  useEffect(() => {
+    if (comments.length > 0) {
+      localStorage.setItem('comments', JSON.stringify(comments));
+    }
+  }, [comments]);
 
   const confirmDelete = (id) => {
     Swal.fire({

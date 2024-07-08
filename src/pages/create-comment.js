@@ -19,7 +19,6 @@ const CreateComment = () => {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const comments = useSelector((state) => state.comments);
 
   const isNameValid = name !== '';
   const isEmailValid = /\S+@\S+\.\S+/.test(email);
