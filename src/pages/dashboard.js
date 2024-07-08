@@ -13,6 +13,7 @@ import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
+import Meta from '@/components/Meta';
 
 export const getServerSideProps = async () => {
   try {
@@ -102,6 +103,7 @@ const Dashboard = ({ comments: initialComments }) => {
   const renderHeader = () => {
     return (
       <div className='flex justify-between items-center mb-4'>
+        <Meta title='Dashboard Page - Comments App' />
         <div className='flex items-center'>
           <h3 className='text-lg font-semibold'>List of Comments</h3>
         </div>

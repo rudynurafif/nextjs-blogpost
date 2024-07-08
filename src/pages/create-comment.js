@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addComment } from '@/store/commentsSlice';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
+import Meta from '@/components/Meta';
 
 const CreateComment = () => {
   const [name, setName] = useState('');
@@ -57,6 +58,7 @@ const CreateComment = () => {
 
   return (
     <div className='flex items-center justify-center mt-5'>
+      <Meta title='Create Comment Page - Comments App' />
       <div className='w-4/5 bg-white rounded-lg shadow-md p-8'>
         <h2 className='text-2xl font-bold mb-4'>Create Comment</h2>
         {error && <p className='text-red-500'>{error}</p>}
