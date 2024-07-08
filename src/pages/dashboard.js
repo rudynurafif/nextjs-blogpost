@@ -14,6 +14,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import axios from 'axios';
 import Meta from '@/components/Meta';
+import { BeatLoader } from 'react-spinners';
 
 export const getServerSideProps = async () => {
   try {
@@ -36,6 +37,7 @@ export const getServerSideProps = async () => {
 
 const Dashboard = ({ comments: initialComments }) => {
   const [globalFilter, setGlobalFilter] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -46,8 +48,10 @@ const Dashboard = ({ comments: initialComments }) => {
     const storedComments = localStorage.getItem('comments');
     if (storedComments) {
       dispatch(setComments(JSON.parse(storedComments)));
+      setIsLoading(false);
     } else {
       dispatch(setComments(initialComments));
+      setIsLoading(false);
     }
   }, [dispatch, initialComments]);
 
@@ -102,28 +106,37 @@ const Dashboard = ({ comments: initialComments }) => {
 
   const renderHeader = () => {
     return (
-      <div className='flex justify-between items-center mb-4'>
+      <>
         <Meta title='Dashboard Page - Comments App' />
-        <div className='flex items-center'>
-          <h3 className='text-lg font-semibold'>List of Comments</h3>
-        </div>
-        <div className='flex items-center'>
-          <span className='p-input-icon-left'>
-            <InputText
-              value={globalFilter}
-              onChange={onGlobalFilterChange}
-              placeholder='Keyword search...'
-              className='p-inputtext-sm ml-5 h-10 p-3 rounded'
-            />
-          </span>
-          <Button
-            type='button'
-            label='Clear'
-            className='p-button-outlined ml-3 hidden sm:block'
-            onClick={clearFilter}
-          />
-        </div>
-      </div>
+        {isLoading ? (
+          <div className='w-full flex flex-col gap-6 items-center justify-center py-20'>
+            <p>Your data is loading...</p>
+            <BeatLoader color='#131921' size={40} />
+          </div>
+        ) : (
+          <div className='flex justify-between items-center mb-4'>
+            <div className='flex items-center'>
+              <h3 className='text-lg font-semibold'>List of Comments</h3>
+            </div>
+            <div className='flex items-center'>
+              <span className='p-input-icon-left'>
+                <InputText
+                  value={globalFilter}
+                  onChange={onGlobalFilterChange}
+                  placeholder='Keyword search...'
+                  className='p-inputtext-sm ml-5 h-10 p-3 rounded'
+                />
+              </span>
+              <Button
+                type='button'
+                label='Clear'
+                className='p-button-outlined ml-3 hidden sm:block'
+                onClick={clearFilter}
+              />
+            </div>
+          </div>
+        )}
+      </>
     );
   };
 
