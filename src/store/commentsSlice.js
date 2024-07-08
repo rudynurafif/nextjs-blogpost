@@ -1,16 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const getInitialState = () => {
-  if (typeof window === 'undefined') {
-    return [];
-  }
-  const storedComments = localStorage.getItem('comments');
-  return storedComments ? JSON.parse(storedComments) : [];
-};
-
 const commentsSlice = createSlice({
   name: 'comments',
-  initialState: getInitialState(),
   initialState: [],
   reducers: {
     setComments: (state, action) => {
