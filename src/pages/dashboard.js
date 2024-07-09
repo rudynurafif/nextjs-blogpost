@@ -61,6 +61,18 @@ const Dashboard = ({ comments: initialComments }) => {
     }
   }, [comments]);
 
+  useEffect(() => {
+    const storedKeyword = localStorage.getItem('keyword');
+
+    if (storedKeyword) {
+      setGlobalFilter(storedKeyword);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('keyword', globalFilter);
+  }, [globalFilter]);
+
   const confirmDelete = (id) => {
     Swal.fire({
       title: 'Are you sure?',
